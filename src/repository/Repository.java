@@ -57,10 +57,10 @@ public class Repository {
     
  //  Puchases
    
-    public void purcaseCustomerProduct(Customer c, Product p, int i){
+    public void purcaseCustomerProduct(Customer c, Product p, int i) throws NotQuantityException, NotMoneyException{
         Calendar date = new GregorianCalendar();
         History h = new History(date.getTime(),c,p,i);
-        try {
+      
             
             if(p.getQuantity()-i < 0){
                 throw new NotQuantityException("Товар с id = "+p.getId()+" "+p.getName()+": не хватило для пользователя c id = "+c.getId());
@@ -77,10 +77,7 @@ public class Repository {
             em.persist(h);
            em.getTransaction().commit();
            System.out.println("Покупатель "+c.getName()+" "+c.getSurname()+" купил товар: \""+p.getName()+"\" - "+i+" шт.");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            //System.out.println("Что то пошло не так при покупке покупателем с id = "+c.getId()+" \""+c.getName()+" "+c.getSurname()+"\", товара c id = "+p.getId()+" \""+p.getName()+"\"!");
-        }
+        
     }
     
     public HashSet<Customer> findCustomersBuyProductFromCity(Product p, String city) {

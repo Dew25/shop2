@@ -8,6 +8,8 @@ package classes;
 import entity.Customer;
 import entity.History;
 import entity.Product;
+import exceptions.NotMoneyException;
+import exceptions.NotQuantityException;
 import java.util.HashSet;
 import java.util.Iterator;
 import javax.persistence.EntityManager;
@@ -43,9 +45,11 @@ public class App {
             if (c != null && p != null) {
                 // протестируйте разныех покупателей с разными продуктами.
                 // поэкспирементируйте с количеством покупаемых продутов
+                System.out.println(c.getName()+" "+c.getSurname()+" id="+c.getId()+" покупает "+p.getName()+" 5 шт");
                 r.purcaseCustomerProduct(c, p, 5);
- 
+                System.out.println(c2.getName()+" "+c2.getSurname()+" id="+c2.getId()+" покупает "+p.getName()+" 10 шт");
                 r.purcaseCustomerProduct(c2, p, 10);
+                System.out.println(c2.getName()+" "+c2.getSurname()+" id="+c2.getId()+" покупает "+p2.getName()+" 5 шт");
                 r.purcaseCustomerProduct(c2, p2, 5);
             }
             String city = "Johvi";
@@ -56,11 +60,16 @@ public class App {
                 Customer customer = (Customer) iter.next();
                 System.out.println("Товар "+p.getName()+ " из города "+city+ " купил "+customer.getName()+" "+customer.getSurname());
             }
-        } catch(Exception e){
+        }
+        catch(NotMoneyException nme){
+            System.out.println(nme.getMessage());
+        }catch(NotQuantityException npe){
+            System.out.println(npe.getMessage());
+        }catch(Exception e){
             System.out.println("Что то пошло не так! "+e.getMessage());
         } finally {
             em.close();
             emf.close();
-        }
+        }  
     }
 }
